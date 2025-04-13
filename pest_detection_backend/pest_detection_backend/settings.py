@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-!4=)6kde5(f#@kp2axb5e=#n^^lyjreypa5k2v6jiumxl7x=1w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['d880-105-109-154-224.ngrok-free.app', 'localhost' ,'127.0.0.1', '::1']
+ALLOWED_HOSTS = ['6a52-105-108-208-148.ngrok-free.app', 'localhost' ,'127.0.0.1', '::1']
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'user_management',
     'image_management',
+    'detection',
 
 
     'allauth.socialaccount.providers.google',
@@ -197,3 +198,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+
+
+# This is the actual file path on the server
+MEDIA_ROOT = BASE_DIR / 'media'  # This will save uploaded media files here
