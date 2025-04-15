@@ -33,7 +33,8 @@ class DetectionResult(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(null = True)
+    updated_at1 = models.BigIntegerField(null=True)
 
     class Meta:
         ordering = ['-timestamp']

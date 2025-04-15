@@ -204,3 +204,77 @@ def update_notes(request):
             continue
 
     return Response({"updated_ids": updated}, status=200)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@parser_classes([JSONParser])
+def soft_delete_detections(request):
+    try:
+        server_ids = request.data.get('server_ids', [])
+
+        if not isinstance(server_ids, list) or not server_ids:
+            return Response({'error': 'server_ids must be a non-empty list.'}, status=400)
+
+        # Filter detections matching server_ids
+        detections = DetectionResult.objects.filter(server_id__in=server_ids)
+
+        # Update isDeleted flag
+        detections.update(is_deleted=True)
+
+        return Response({'message': f'Successfully soft-deleted {detections.count()} detections.'}, status=200)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
+    
+
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@parser_classes([JSONParser])
+def sync_detection_notes(request):
+    user = request.user
+    mobile_detections = request.data.get("detections", [])
+
+    if not isinstance(mobile_detections, list):
+        return Response({"error": "Invalid data format. Expected a list of detections."}, status=HTTP_400_BAD_REQUEST)
+
+    detections_to_update_mobile = []
+
+    for mobile_det in mobile_detections:
+        if not isinstance(mobile_det, dict):
+            continue
+
+        server_id = mobile_det.get('serverId')
+        mobile_updated_at = mobile_det.get('updatedAt')
+        mobile_note = mobile_det.get('note')
+
+        if not server_id or mobile_updated_at is None:
+            continue
+
+        try:
+            detection = DetectionResult.objects.get(server_id=server_id, user=user, is_deleted=0)
+            server_updated_at = detection.updated_at1
+
+            # ✅ Skip if server_updated_at is None
+            if server_updated_at is None:
+                continue
+
+            if mobile_updated_at > server_updated_at:
+                detection.note = mobile_note
+                detection.updated_at1 = mobile_updated_at
+                detection.save()
+            elif server_updated_at > mobile_updated_at:
+                detections_to_update_mobile.append({
+                    "serverId": str(detection.server_id),
+                    "updatedAt": server_updated_at,
+                    "note": detection.note
+                })
+
+        except DetectionResult.DoesNotExist:
+            continue
+
+    return Response({"detections": detections_to_update_mobile}, status=HTTP_200_OK)
