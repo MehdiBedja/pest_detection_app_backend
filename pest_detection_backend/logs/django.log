@@ -1,0 +1,66 @@
+INFO 2025-06-19 00:31:39,829 autoreload 23840 21680 Watching for file changes with StatReloader
+ERROR 2025-06-19 00:31:44,452 exception 23840 17592 Invalid HTTP_HOST header: 'e0ec-154-247-168-211.ngrok-free.app'. You may need to add 'e0ec-154-247-168-211.ngrok-free.app' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\utils\deprecation.py", line 128, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\http\request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'e0ec-154-247-168-211.ngrok-free.app'. You may need to add 'e0ec-154-247-168-211.ngrok-free.app' to ALLOWED_HOSTS.
+WARNING 2025-06-19 00:31:44,513 log 23840 17592 Bad Request: /user_management/get_user_info/
+WARNING 2025-06-19 00:31:44,515 basehttp 23840 17592 "GET /user_management/get_user_info/ HTTP/1.1" 400 80453
+ERROR 2025-06-19 00:31:45,261 exception 23840 3108 Invalid HTTP_HOST header: 'e0ec-154-247-168-211.ngrok-free.app'. You may need to add 'e0ec-154-247-168-211.ngrok-free.app' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\utils\deprecation.py", line 128, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\http\request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'e0ec-154-247-168-211.ngrok-free.app'. You may need to add 'e0ec-154-247-168-211.ngrok-free.app' to ALLOWED_HOSTS.
+WARNING 2025-06-19 00:31:45,279 log 23840 3108 Bad Request: /user_management/get_user_info/
+WARNING 2025-06-19 00:31:45,281 basehttp 23840 3108 "GET /user_management/get_user_info/ HTTP/1.1" 400 80412
+ERROR 2025-06-19 00:31:50,519 exception 23840 14380 Invalid HTTP_HOST header: 'e0ec-154-247-168-211.ngrok-free.app'. You may need to add 'e0ec-154-247-168-211.ngrok-free.app' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\utils\deprecation.py", line 128, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "F:\pest_detection_app_backend\pestvenv\Lib\site-packages\django\http\request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'e0ec-154-247-168-211.ngrok-free.app'. You may need to add 'e0ec-154-247-168-211.ngrok-free.app' to ALLOWED_HOSTS.
+WARNING 2025-06-19 00:31:50,536 log 23840 14380 Bad Request: /user_management/google_sign_in
+WARNING 2025-06-19 00:31:50,537 basehttp 23840 14380 "POST /user_management/google_sign_in HTTP/1.1" 400 80312
+INFO 2025-06-19 00:32:38,003 autoreload 25968 23816 Watching for file changes with StatReloader
+INFO 2025-06-19 00:32:44,692 basehttp 25968 6772 "POST /user_management/google_sign_in HTTP/1.1" 200 393
+INFO 2025-06-19 00:32:45,153 basehttp 25968 6772 "GET /user_management/check_is_google_user HTTP/1.1" 200 52
+INFO 2025-06-19 00:32:45,941 basehttp 25968 17220 "POST /detection/fetch/ HTTP/1.1" 200 59
+INFO 2025-06-19 00:32:46,192 basehttp 25968 17220 "POST /detection/upload/ HTTP/1.1" 201 2
+INFO 2025-06-19 00:32:46,194 basehttp 25968 28360 "GET /detection/deleted/ HTTP/1.1" 200 18
+INFO 2025-06-19 00:32:46,890 basehttp 25968 28360 "POST /detection/sync/notes/ HTTP/1.1" 200 17
+INFO 2025-06-19 00:35:28,768 autoreload 25968 23816 F:\pest_detection_app_backend\pest_detection_backend\pest_detection_backend\settings.py changed, reloading.
+INFO 2025-06-19 00:35:29,318 autoreload 17956 11644 Watching for file changes with StatReloader
+INFO 2025-06-19 00:35:42,495 autoreload 17956 11644 F:\pest_detection_app_backend\pest_detection_backend\pest_detection_backend\settings.py changed, reloading.
+INFO 2025-06-19 00:35:43,075 autoreload 26488 19936 Watching for file changes with StatReloader
+INFO 2025-06-19 00:35:58,399 autoreload 26488 19936 F:\pest_detection_app_backend\pest_detection_backend\pest_detection_backend\settings.py changed, reloading.
+INFO 2025-06-19 00:35:58,888 autoreload 25940 8860 Watching for file changes with StatReloader
+INFO 2025-06-19 00:36:00,623 autoreload 25940 8860 F:\pest_detection_app_backend\pest_detection_backend\pest_detection_backend\settings.py changed, reloading.
+INFO 2025-06-19 00:36:01,114 autoreload 4948 20716 Watching for file changes with StatReloader
+INFO 2025-06-19 00:36:08,039 autoreload 4948 20716 F:\pest_detection_app_backend\pest_detection_backend\pest_detection_backend\settings.py changed, reloading.
+INFO 2025-06-19 00:36:08,599 autoreload 27364 13976 Watching for file changes with StatReloader

@@ -1,3 +1,4 @@
+import json
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -106,17 +107,117 @@ def custom_user_detail(request, id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def change_password(request):
-    user = request.user
-    old_password = request.data.get('old_password')
-    new_password = request.data.get('new_password')
+    """
+    Change password for regular users (non-Google users)
+    Requires both old and new password
+    """
+    try:
+        data = json.loads(request.body)
+        old_password = data.get('old_password')
+        new_password = data.get('new_password')
+        
+        if not old_password or not new_password:
+            return Response({
+                'success': False,
+                'message': 'Both old and new passwords are required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = request.user
+        
+        # Check if user is a Google user (has no password set)
+        if not user.has_usable_password():
+            return Response({
+                'success': False,
+                'message': 'Google users should use set password endpoint'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Verify old password
+        if not user.check_password(old_password):
+            return Response({
+                'success': False,
+                'message': 'Current password is incorrect'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Validate new password (you can add more validation here)
+        if len(new_password) < 8:
+            return Response({
+                'success': False,
+                'message': 'New password must be at least 8 characters long'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Set new password
+        user.set_password(new_password)
+        user.save()
+        
+        return Response({
+            'success': True,
+            'message': 'Password changed successfully'
+        }, status=status.HTTP_200_OK)
+        
+    except json.JSONDecodeError:
+        return Response({
+            'success': False,
+            'message': 'Invalid JSON data'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': f'An error occurred: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    if not user.check_password(old_password):
-        return Response({'error': 'Invalid old password'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user.set_password(new_password)
-    user.save()
-    return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
-
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def set_password(request):
+    """
+    Set password for Google users who don't have a password yet
+    Only requires new password
+    """
+    try:
+        data = json.loads(request.body)
+        new_password = data.get('new_password')
+        
+        if not new_password:
+            return Response({
+                'success': False,
+                'message': 'New password is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = request.user
+        
+        # Check if user already has a password set
+        if user.has_usable_password():
+            return Response({
+                'success': False,
+                'message': 'User already has a password. Use change password endpoint instead.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Validate new password (you can add more validation here)
+        if len(new_password) < 8:
+            return Response({
+                'success': False,
+                'message': 'Password must be at least 8 characters long'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Set password for Google user
+        user.set_password(new_password)
+        user.save()
+        
+        return Response({
+            'success': True,
+            'message': 'Password set successfully'
+        }, status=status.HTTP_200_OK)
+        
+    except json.JSONDecodeError:
+        return Response({
+            'success': False,
+            'message': 'Invalid JSON data'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': f'An error occurred: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])  # Use POST method for logout
 @permission_classes([IsAuthenticated])  # User must be authenticated to logout
@@ -406,3 +507,24 @@ def google_sign_in(request):
         import traceback
         traceback.print_exc()
         return Response({'error': f'Google Sign-In failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_is_google_user(request):
+    """
+    Check if the authenticated user is a Google user
+    Returns: {'is_google_user': boolean}
+    """
+    try:
+        user = request.user
+        return Response({
+            'is_google_user': user.is_google_user,
+            'has_usable_password': user.has_usable_password()
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            'error': f'Failed to check user type: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

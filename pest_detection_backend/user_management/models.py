@@ -11,6 +11,8 @@ class CustomUser(AbstractUser):
     location = models.CharField(max_length=100, blank=True)
     date_joined = models.DateField(null=True, blank=True)
     profile_picture = models.CharField(max_length=255, blank=True)
+    is_google_user = models.BooleanField(null = True , default=False)  # New field
+
 
     def __str__(self):
         return self.username
