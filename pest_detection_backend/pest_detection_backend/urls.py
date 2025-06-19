@@ -11,4 +11,9 @@ urlpatterns = [
     path('user_management/', include('user_management.urls')) , # Include your app's URL configuration
     path('detection/' , include('detection.urls'))
 
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Optionally serve static files in development (WhiteNoise handles this in production)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
