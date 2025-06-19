@@ -14,7 +14,11 @@ urlpatterns = [
     # update
     re_path(r'^notes/$', views.get_updated_notes),
     re_path(r'^notes/update/$', views.update_notes),
-    re_path(r'^sync/notes/', views.sync_detection_notes,)
+    re_path(r'^sync/notes/', views.sync_detection_notes,),
+
+
+    re_path(r'^sync/notes/', views.sync_detection_notes,),
+    re_path(r'testcloudinary/',views.debug_cloudinary),
 
 
 

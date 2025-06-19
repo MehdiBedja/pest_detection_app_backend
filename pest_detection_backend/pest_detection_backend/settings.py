@@ -65,10 +65,11 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
-    'whitenoise.runserver_nostatic',
     'cloudinary',
     'cloudinary_storage',
+    "django.contrib.staticfiles",
+    'whitenoise.runserver_nostatic',
+
 
 
     # Custom apps
@@ -207,8 +208,10 @@ if DEBUG:
     os.makedirs(MEDIA_ROOT, exist_ok=True)
     os.makedirs(MEDIA_ROOT / 'images', exist_ok=True)
 else:
-    # Use Cloudinary for production
+    # ⚠️ CRITICAL: Fix the DEFAULT_FILE_STORAGE setting
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    # ⚠️ ADD: Set MEDIA_URL for Cloudinary
+    CLOUDINARY_STORAGE['STATICFILES_MANIFEST_ROOT'] = BASE_DIR / 'staticfiles'
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -291,19 +294,3 @@ else:
     # Console email backend for development
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

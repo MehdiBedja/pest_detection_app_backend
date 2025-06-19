@@ -28,6 +28,29 @@ from uuid import UUID
 from .models import DetectionResult
 
 
+
+import cloudinary
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def debug_cloudinary(request):
+    """Debug endpoint to check Cloudinary configuration"""
+    
+    debug_info = {
+        'DEBUG': settings.DEBUG,
+        'DEFAULT_FILE_STORAGE': getattr(settings, 'DEFAULT_FILE_STORAGE', 'Not set'),
+        'CLOUDINARY_STORAGE': settings.CLOUDINARY_STORAGE,
+        'CLOUDINARY_CONFIG': {
+            'cloud_name': cloudinary.config().cloud_name,
+            'api_key': cloudinary.config().api_key,
+            'api_secret': 'SET' if cloudinary.config().api_secret else 'NOT SET',
+        }
+    }
+    
+    logger.info(f"Cloudinary Debug Info: {debug_info}")
+    return Response(debug_info, status=200)
+
+
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def get_detections_by_ids(request):
