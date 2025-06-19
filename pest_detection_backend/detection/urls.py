@@ -18,7 +18,7 @@ urlpatterns = [
 
 
     re_path(r'^sync/notes/', views.sync_detection_notes,),
-    re_path(r'testcloudinary/',views.debug_cloudinary),
+    re_path(r'^testcloudinary/',views.debug_cloudinary),
 
 
 
