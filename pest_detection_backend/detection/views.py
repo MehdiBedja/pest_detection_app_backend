@@ -106,11 +106,33 @@ def get_detections_by_ids(request):
 
 
 
+import json
+import os
+import logging
+from django.conf import settings
+from rest_framework.decorators import api_view, parser_classes, permission_classes
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+logger = logging.getLogger(__name__)
+
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 @permission_classes([IsAuthenticated])
 def upload_detections_batch(request):
-    import json
+    logger.info("=== Starting batch upload ===")
+    logger.info(f"MEDIA_ROOT: {settings.MEDIA_ROOT}")
+    logger.info(f"MEDIA_URL: {settings.MEDIA_URL}")
+    
+    # Ensure media directories exist
+    media_root = settings.MEDIA_ROOT
+    images_dir = os.path.join(media_root, 'images')
+    os.makedirs(images_dir, exist_ok=True)
+    
+    logger.info(f"Media root exists: {os.path.exists(media_root)}")
+    logger.info(f"Images dir exists: {os.path.exists(images_dir)}")
+    logger.info(f"Images dir writable: {os.access(images_dir, os.W_OK)}")
 
     # Get the raw form field for detections
     raw_detections = request.data.get('detections')
@@ -123,24 +145,72 @@ def upload_detections_batch(request):
     except json.JSONDecodeError:
         return Response({'error': 'Invalid JSON in detections'}, status=400)
 
+    logger.info(f"Number of detections: {len(detections)}")
+    logger.info(f"Files in request: {list(request.FILES.keys())}")
+
     # Map images like "image_0", "image_1" to their respective detection
     for i, det in enumerate(detections):
         image_key = det.get('image')  # e.g., "image_0"
+        logger.info(f"Detection {i}: image_key={image_key}")
+        
         if image_key and image_key in request.FILES:
-            det['image'] = request.FILES[image_key]
+            uploaded_file = request.FILES[image_key]
+            logger.info(f"Found file for {image_key}: {uploaded_file.name}, size: {uploaded_file.size}")
+            det['image'] = uploaded_file
         else:
+            logger.warning(f"No file found for {image_key}")
             det['image'] = None  # Optional
 
     serializer = DetectionBatchSerializer(data={'detections': detections}, context={'user': request.user})
 
     if serializer.is_valid():
+        logger.info("Serializer is valid, saving...")
         created = serializer.save()
+        
+        # Debug the saved instances
+        for i, instance in enumerate(created):
+            logger.info(f"=== Instance {i} Debug ===")
+            logger.info(f"Server ID: {instance.server_id}")
+            
+            if hasattr(instance, 'image') and instance.image:
+                logger.info(f"Image field name: {instance.image.name}")
+                logger.info(f"Image field path: {instance.image.path}")
+                logger.info(f"Image field URL: {instance.image.url}")
+                
+                # Check if file actually exists
+                file_exists = os.path.exists(instance.image.path)
+                logger.info(f"File exists on disk: {file_exists}")
+                
+                if file_exists:
+                    file_size = os.path.getsize(instance.image.path)
+                    logger.info(f"File size: {file_size} bytes")
+                else:
+                    logger.error(f"❌ FILE NOT FOUND: {instance.image.path}")
+                    
+                    # Check what files ARE in the directory
+                    parent_dir = os.path.dirname(instance.image.path)
+                    if os.path.exists(parent_dir):
+                        files_in_dir = os.listdir(parent_dir)
+                        logger.info(f"Files in {parent_dir}: {files_in_dir}")
+                        
+                        # Check if file exists with different name
+                        expected_filename = os.path.basename(instance.image.path)
+                        logger.info(f"Looking for: {expected_filename}")
+                        
+                        # List files that contain the server_id
+                        matching_files = [f for f in files_in_dir if str(instance.server_id) in f]
+                        logger.info(f"Files containing server_id: {matching_files}")
+                    else:
+                        logger.error(f"Parent directory doesn't exist: {parent_dir}")
+            else:
+                logger.info("No image field or image is None")
+        
         read_serializer = DetectionResultReadSerializer(created, many=True)
         return Response(read_serializer.data, status=201)
-
-    return Response(serializer.errors, status=400)
-
-
+    else:
+        logger.error(f"Serializer errors: {serializer.errors}")
+        return Response(serializer.errors, status=400)
+    
 # views.py
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

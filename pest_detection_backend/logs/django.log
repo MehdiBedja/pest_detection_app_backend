@@ -137,3 +137,4 @@ INFO 2025-06-19 02:29:04,799 basehttp 10264 25580 "GET /media/images/b6e312ff-7e
 INFO 2025-06-19 02:29:16,403 basehttp 10264 8664 "GET /detection/deleted/ HTTP/1.1" 200 18
 INFO 2025-06-19 02:29:16,408 basehttp 10264 12264 "POST /detection/upload/ HTTP/1.1" 201 2
 INFO 2025-06-19 02:29:16,711 basehttp 10264 12264 "POST /detection/sync/notes/ HTTP/1.1" 200 17
+INFO 2025-06-19 02:43:21,676 autoreload 25080 17420 Watching for file changes with StatReloader
