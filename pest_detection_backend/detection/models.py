@@ -7,7 +7,7 @@ from django.conf import settings
 def detection_image_upload_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = f"{instance.server_id}.{ext}"
-    return os.path.join('images/', filename)  # ✅ USE MEDIA
+    return os.path.join('static/images/', filename)
 
 
 class DetectionResult(models.Model):
