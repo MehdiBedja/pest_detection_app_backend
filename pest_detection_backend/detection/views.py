@@ -30,20 +30,32 @@ from .models import DetectionResult
 
 
 import cloudinary
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def debug_cloudinary(request):
     """Debug endpoint to check Cloudinary configuration"""
     
+    # Convert PosixPath objects to strings for JSON serialization
+    cloudinary_storage = {}
+    for key, value in settings.CLOUDINARY_STORAGE.items():
+        if hasattr(value, '__str__'):
+            cloudinary_storage[key] = str(value)
+        else:
+            cloudinary_storage[key] = value
+    
     debug_info = {
         'DEBUG': settings.DEBUG,
         'DEFAULT_FILE_STORAGE': getattr(settings, 'DEFAULT_FILE_STORAGE', 'Not set'),
-        'CLOUDINARY_STORAGE': settings.CLOUDINARY_STORAGE,
+        'CLOUDINARY_STORAGE': cloudinary_storage,
         'CLOUDINARY_CONFIG': {
             'cloud_name': cloudinary.config().cloud_name,
             'api_key': cloudinary.config().api_key,
             'api_secret': 'SET' if cloudinary.config().api_secret else 'NOT SET',
+        },
+        'INSTALLED_APPS_ORDER': {
+            'cloudinary_position': settings.INSTALLED_APPS.index('cloudinary') if 'cloudinary' in settings.INSTALLED_APPS else -1,
+            'cloudinary_storage_position': settings.INSTALLED_APPS.index('cloudinary_storage') if 'cloudinary_storage' in settings.INSTALLED_APPS else -1,
+            'staticfiles_position': settings.INSTALLED_APPS.index('django.contrib.staticfiles') if 'django.contrib.staticfiles' in settings.INSTALLED_APPS else -1,
         }
     }
     
