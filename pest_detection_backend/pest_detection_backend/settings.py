@@ -163,12 +163,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Only include directories that actually exist
-STATICFILES_DIRS = []
-static_dir = BASE_DIR / 'static'
-if static_dir.exists():
-    STATICFILES_DIRS.append(static_dir)
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 # Media files
 MEDIA_URL = '/media/'
