@@ -15,6 +15,7 @@ from .serializers import *
 from .models import *
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from django.conf import settings
 
 
 from uuid import UUID
@@ -157,17 +158,18 @@ logger = logging.getLogger(__name__)
 @permission_classes([IsAuthenticated])
 def upload_detections_batch(request):
     logger.info("=== Starting batch upload ===")
-    logger.info(f"MEDIA_ROOT: {settings.MEDIA_ROOT}")
-    logger.info(f"MEDIA_URL: {settings.MEDIA_URL}")
     
-    # Ensure media directories exist
-    media_root = settings.MEDIA_ROOT
-    images_dir = os.path.join(media_root, 'images')
-    os.makedirs(images_dir, exist_ok=True)
+    # Check current file storage setting
+    current_storage = getattr(settings, 'DEFAULT_FILE_STORAGE', 'default')
+    logger.info(f"Current DEFAULT_FILE_STORAGE: {current_storage}")
     
-    logger.info(f"Media root exists: {os.path.exists(media_root)}")
-    logger.info(f"Images dir exists: {os.path.exists(images_dir)}")
-    logger.info(f"Images dir writable: {os.access(images_dir, os.W_OK)}")
+    # Verify Cloudinary config
+    cloud_config = {
+        'cloud_name': cloudinary.config().cloud_name,
+        'api_key': cloudinary.config().api_key,
+        'api_secret_set': bool(cloudinary.config().api_secret)
+    }
+    logger.info(f"Cloudinary config: {cloud_config}")
 
     # Get the raw form field for detections
     raw_detections = request.data.get('detections')
@@ -183,9 +185,9 @@ def upload_detections_batch(request):
     logger.info(f"Number of detections: {len(detections)}")
     logger.info(f"Files in request: {list(request.FILES.keys())}")
 
-    # Map images like "image_0", "image_1" to their respective detection
+    # Map images to detections
     for i, det in enumerate(detections):
-        image_key = det.get('image')  # e.g., "image_0"
+        image_key = det.get('image')
         logger.info(f"Detection {i}: image_key={image_key}")
         
         if image_key and image_key in request.FILES:
@@ -194,7 +196,7 @@ def upload_detections_batch(request):
             det['image'] = uploaded_file
         else:
             logger.warning(f"No file found for {image_key}")
-            det['image'] = None  # Optional
+            det['image'] = None
 
     serializer = DetectionBatchSerializer(data={'detections': detections}, context={'user': request.user})
 
@@ -202,41 +204,27 @@ def upload_detections_batch(request):
         logger.info("Serializer is valid, saving...")
         created = serializer.save()
         
-        # Debug the saved instances
+        # Enhanced debugging
         for i, instance in enumerate(created):
             logger.info(f"=== Instance {i} Debug ===")
             logger.info(f"Server ID: {instance.server_id}")
             
             if hasattr(instance, 'image') and instance.image:
                 logger.info(f"Image field name: {instance.image.name}")
-                logger.info(f"Image field path: {instance.image.path}")
                 logger.info(f"Image field URL: {instance.image.url}")
                 
-                # Check if file actually exists
-                file_exists = os.path.exists(instance.image.path)
-                logger.info(f"File exists on disk: {file_exists}")
-                
-                if file_exists:
-                    file_size = os.path.getsize(instance.image.path)
-                    logger.info(f"File size: {file_size} bytes")
-                else:
-                    logger.error(f"❌ FILE NOT FOUND: {instance.image.path}")
+                # Check if URL is actually Cloudinary
+                if 'cloudinary.com' in instance.image.url:
+                    logger.info("SUCCESS: Image uploaded to Cloudinary")
+                elif instance.image.url.startswith('/media/'):
+                    logger.error("ERROR: Image saved locally, not to Cloudinary!")
+                    logger.error(f"This suggests DEFAULT_FILE_STORAGE is not working properly")
                     
-                    # Check what files ARE in the directory
-                    parent_dir = os.path.dirname(instance.image.path)
-                    if os.path.exists(parent_dir):
-                        files_in_dir = os.listdir(parent_dir)
-                        logger.info(f"Files in {parent_dir}: {files_in_dir}")
-                        
-                        # Check if file exists with different name
-                        expected_filename = os.path.basename(instance.image.path)
-                        logger.info(f"Looking for: {expected_filename}")
-                        
-                        # List files that contain the server_id
-                        matching_files = [f for f in files_in_dir if str(instance.server_id) in f]
-                        logger.info(f"Files containing server_id: {matching_files}")
-                    else:
-                        logger.error(f"Parent directory doesn't exist: {parent_dir}")
+                    # Additional debugging
+                    logger.error(f"Image storage class: {type(instance.image.storage)}")
+                    logger.error(f"Expected: cloudinary_storage.storage.MediaCloudinaryStorage")
+                else:
+                    logger.warning(f"Unknown URL pattern: {instance.image.url}")
             else:
                 logger.info("No image field or image is None")
         
@@ -245,7 +233,8 @@ def upload_detections_batch(request):
     else:
         logger.error(f"Serializer errors: {serializer.errors}")
         return Response(serializer.errors, status=400)
-    
+
+
 # views.py
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

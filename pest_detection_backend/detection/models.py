@@ -2,12 +2,12 @@ import uuid
 import os
 from django.db import models
 from django.conf import settings
-
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 def detection_image_upload_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = f"{instance.server_id}.{ext}"
-    return os.path.join('images/', filename)  # ✅ Correct! This goes to MEDIA_ROOT/images/
+    return os.path.join('images/', filename)  
 
 
 class DetectionResult(models.Model):
@@ -22,7 +22,9 @@ class DetectionResult(models.Model):
     image = models.ImageField(
         upload_to=detection_image_upload_path,
         null=True,
-        blank=True
+        blank=True,
+        storage=MediaCloudinaryStorage()  # 👈 Force Cloudinary storage
+
     )
 
     timestamp = models.BigIntegerField()

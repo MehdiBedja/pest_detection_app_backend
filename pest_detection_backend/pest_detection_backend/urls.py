@@ -12,8 +12,8 @@ urlpatterns = [
     path('detection/' , include('detection.urls'))
 
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Optionally serve static files in development (WhiteNoise handles this in production)
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

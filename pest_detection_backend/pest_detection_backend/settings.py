@@ -41,6 +41,50 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 
+import sys
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+            'formatter': 'verbose',
+            'encoding': 'utf-8',  # Add this to handle Unicode characters
+        },
+        'console': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'stream': sys.stdout,  # Use stdout instead of stderr for better encoding support
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
 
 
 # Cloudinary Configuration
@@ -65,12 +109,13 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    
+    # Cloudinary apps - ORDER MATTERS!
+    'cloudinary_storage',  # Must come before staticfiles
     'cloudinary',
-    'cloudinary_storage',
+    
     "django.contrib.staticfiles",
     'whitenoise.runserver_nostatic',
-
-
 
     # Custom apps
     'user_management',
@@ -151,6 +196,9 @@ TEMPLATES = [
     },
 ]
 
+
+
+
 WSGI_APPLICATION = "pest_detection_backend.wsgi.application"
 
 # Database
@@ -199,25 +247,23 @@ if (BASE_DIR / 'static').exists():
 # WhiteNoise configuration
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Media files configuration - Using Cloudinary for production
-if DEBUG:
-    # Local media files for development
-    MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Keep local MEDIA_ROOT as fallback/cache (optional)
+if  DEBUG : 
     MEDIA_ROOT = BASE_DIR / 'media'
-    # Create media directory if it doesn't exist
     os.makedirs(MEDIA_ROOT, exist_ok=True)
-    os.makedirs(MEDIA_ROOT / 'images', exist_ok=True)
-else:
-    # ⚠️ CRITICAL: Fix the DEFAULT_FILE_STORAGE setting
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    # ⚠️ ADD: Set MEDIA_URL for Cloudinary
-    CLOUDINARY_STORAGE['STATICFILES_MANIFEST_ROOT'] = BASE_DIR / 'staticfiles'
+
+print("DEFAULT_FILE_STORAGE =", DEFAULT_FILE_STORAGE)
+
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Security settings for production
-if not DEBUG:
+if  DEBUG or not DEBUG:
     # Force HTTPS in production
     SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True').lower() == 'true'
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
