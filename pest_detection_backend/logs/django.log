@@ -717,3 +717,47 @@ INFO 2025-06-20 12:59:45,358 basehttp 30100 26168 "POST /detection/sync/notes/ H
 INFO 2025-06-20 13:10:27,360 autoreload 24764 23376 Watching for file changes with StatReloader
 INFO 2025-06-20 13:11:16,946 autoreload 12776 11488 Watching for file changes with StatReloader
 INFO 2025-06-20 13:12:02,114 autoreload 2804 3288 Watching for file changes with StatReloader
+INFO 2025-06-26 23:24:51,263 autoreload 13484 22080 Watching for file changes with StatReloader
+WARNING 2025-06-26 23:24:57,097 log 13484 3056 Not Found: /
+WARNING 2025-06-26 23:24:57,106 basehttp 13484 3056 "GET / HTTP/1.1" 404 179
+WARNING 2025-06-26 23:24:57,217 log 13484 3056 Not Found: /favicon.ico
+WARNING 2025-06-26 23:24:57,220 basehttp 13484 3056 "GET /favicon.ico HTTP/1.1" 404 179
+INFO 2025-06-26 23:25:08,096 basehttp 13484 23708 "GET /app-info/ HTTP/1.1" 200 0
+INFO 2025-06-26 23:25:55,247 basehttp 13484 23708 "GET /app-info/ HTTP/1.1" 200 5018
+WARNING 2025-06-26 23:25:55,278 log 13484 23708 Not Found: /static/images/logo.png
+WARNING 2025-06-26 23:25:55,279 basehttp 13484 23708 "GET /static/images/logo.png HTTP/1.1" 404 179
+INFO 2025-06-26 23:31:49,968 basehttp 13484 14220 "GET /app-info/ HTTP/1.1" 200 17287
+INFO 2025-06-26 23:33:03,819 basehttp 13484 14220 "GET /app-info/ HTTP/1.1" 200 17248
+INFO 2025-06-26 23:34:45,506 basehttp 13484 14220 "GET /app-info/ HTTP/1.1" 200 17248
+INFO 2025-06-26 23:35:20,295 basehttp 13484 14220 "GET /app-info/ HTTP/1.1" 200 17248
+INFO 2025-06-26 23:47:55,202 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20539
+WARNING 2025-06-26 23:47:55,238 log 13484 16788 Not Found: /app-info/logo.png
+WARNING 2025-06-26 23:47:55,239 basehttp 13484 16788 "GET /app-info/logo.png HTTP/1.1" 404 179
+INFO 2025-06-26 23:49:50,394 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20554
+WARNING 2025-06-26 23:49:50,500 log 13484 16788 Not Found: /app-info/static/images/logo6.jpg
+WARNING 2025-06-26 23:49:50,510 basehttp 13484 16788 "GET /app-info/static/images/logo6.jpg HTTP/1.1" 404 179
+INFO 2025-06-26 23:50:51,454 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20554
+WARNING 2025-06-26 23:50:51,546 log 13484 16788 Not Found: /app-info/static/images/logo6.jpg
+WARNING 2025-06-26 23:50:51,548 basehttp 13484 16788 "GET /app-info/static/images/logo6.jpg HTTP/1.1" 404 179
+INFO 2025-06-26 23:51:41,810 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20554
+WARNING 2025-06-26 23:51:41,909 log 13484 16788 Not Found: /app-info/static/images/logo6.jpg
+WARNING 2025-06-26 23:51:41,910 basehttp 13484 16788 "GET /app-info/static/images/logo6.jpg HTTP/1.1" 404 179
+INFO 2025-06-26 23:52:00,742 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20540
+WARNING 2025-06-26 23:52:00,843 log 13484 16788 Not Found: /app-info/logo6.jpg
+WARNING 2025-06-26 23:52:00,845 basehttp 13484 16788 "GET /app-info/logo6.jpg HTTP/1.1" 404 179
+INFO 2025-06-26 23:52:01,044 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20540
+WARNING 2025-06-26 23:52:01,099 log 13484 16788 Not Found: /app-info/logo6.jpg
+WARNING 2025-06-26 23:52:01,100 basehttp 13484 16788 "GET /app-info/logo6.jpg HTTP/1.1" 404 179
+INFO 2025-06-26 23:52:02,505 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20540
+WARNING 2025-06-26 23:52:02,579 log 13484 16788 Not Found: /app-info/logo6.jpg
+WARNING 2025-06-26 23:52:02,580 basehttp 13484 16788 "GET /app-info/logo6.jpg HTTP/1.1" 404 179
+INFO 2025-06-26 23:53:01,215 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20321
+INFO 2025-06-26 23:54:36,160 basehttp 13484 16788 "GET /app-info/ HTTP/1.1" 200 20238
+WARNING 2025-06-27 00:10:33,269 log 13484 28592 Not Found: /privacy_policy/
+WARNING 2025-06-27 00:10:33,281 basehttp 13484 28592 "GET /privacy_policy/ HTTP/1.1" 404 179
+INFO 2025-06-27 00:11:20,536 basehttp 13484 28592 "GET /privacy-policy/ HTTP/1.1" 200 27950
+INFO 2025-06-27 00:12:18,893 basehttp 13484 28592 "GET /privacy-policy/ HTTP/1.1" 200 27952
+INFO 2025-06-27 00:21:59,637 basehttp 13484 14728 "GET /privacy-policy/ HTTP/1.1" 200 26517
+INFO 2025-06-27 00:28:46,239 basehttp 13484 25812 "GET /privacy-policy/ HTTP/1.1" 200 26249
+INFO 2025-06-27 00:33:01,462 basehttp 13484 25812 "GET /privacy-policy/ HTTP/1.1" 200 26249
+INFO 2025-06-27 00:33:40,749 basehttp 13484 25812 "GET /terms/ HTTP/1.1" 200 20613

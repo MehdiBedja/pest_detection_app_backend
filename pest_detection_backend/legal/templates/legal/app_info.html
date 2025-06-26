@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App Info - ScanPest AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 5px; height: 5px; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { width: 4px; height: 4px; left: 85%; animation-delay: 0.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .logo-bg {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .lang-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lang-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .lang-btn:hover::before {
+            left: 100%;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-title::before {
+            content: '🐛';
+            font-size: 1.2rem;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* RTL support */
+        section[dir="rtl"] {
+            text-align: right;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .glass-card {
+                padding: 2rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .lang-switcher {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .lang-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0;
+            animation: loadIn 1s ease-out forwards;
+        }
+
+        @keyframes loadIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container loading">
+        <div class="glass-card">
+            <header>
+
+                <h1 id="page-title">ScanPest AI</h1>
+                <p class="subtitle">AI-Powered Pest Detection Technology</p>
+            </header>
+
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="setLanguage('en')">🇺🇸 English</button>
+                <button class="lang-btn" onclick="setLanguage('fr')">🇫🇷 Français</button>
+                <button class="lang-btn" onclick="setLanguage('ar')">🇸🇦 العربية</button>
+            </div>
+
+            <section id="en" class="active">
+                <div class="content-card">
+                    <div class="content-title">About ScanPest AI</div>
+                    <p>ScanPest AI is an advanced AI-powered application that revolutionizes pest management for farmers and gardeners. Using cutting-edge computer vision technology, our app instantly identifies insect pests through your smartphone camera and provides intelligent pesticide recommendations.</p>
+                </div>
+                
+                <div class="content-card">
+                    <p>Our comprehensive platform goes beyond simple identification. Get personalized treatment suggestions, sync your detections across all devices, and access powerful analytics through our full dashboard to track your pest management success over time.</p>
+                </div>
+                
+                <div class="content-card">
+                    <p>With seamless cloud synchronization, dark/light mode support, and detailed statistics, ScanPest AI empowers you to make data-driven decisions for optimal crop protection and yield improvement.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon">🔍</span>
+                        <div class="feature-text">AI Pest Detection</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💊</span>
+                        <div class="feature-text">Pesticide Recommendations</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">☁️</span>
+                        <div class="feature-text">Cloud Sync</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔐</span>
+                        <div class="feature-text">Google Login</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <div class="feature-text">Analytics Dashboard</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🌙</span>
+                        <div class="feature-text">Dark/Light Mode</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📱</span>
+                        <div class="feature-text">Multi-Device Sync</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📈</span>
+                        <div class="feature-text">Detection Statistics</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="fr">
+                <div class="content-card">
+                    <div class="content-title">À propos de ScanPest AI</div>
+                    <p>ScanPest AI est une application révolutionnaire alimentée par l'IA qui transforme la gestion des nuisibles pour les agriculteurs et jardiniers. Utilisant une technologie de vision par ordinateur de pointe, notre app identifie instantanément les insectes nuisibles via l'appareil photo de votre smartphone et fournit des recommandations intelligentes de pesticides.</p>
+                </div>
+                
+                <div class="content-card">
+                    <p>Notre plateforme complète va au-delà de la simple identification. Obtenez des suggestions de traitement personnalisées, synchronisez vos détections sur tous vos appareils, et accédez à des analyses puissantes via notre tableau de bord complet pour suivre votre succès en gestion des nuisibles.</p>
+                </div>
+                
+                <div class="content-card">
+                    <p>Avec une synchronisation cloud transparente, le support mode sombre/clair, et des statistiques détaillées, ScanPest AI vous permet de prendre des décisions basées sur les données pour une protection optimale des cultures.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon">🔍</span>
+                        <div class="feature-text">Détection IA</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💊</span>
+                        <div class="feature-text">Recommandations Pesticides</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">☁️</span>
+                        <div class="feature-text">Sync Cloud</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔐</span>
+                        <div class="feature-text">Connexion Google</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <div class="feature-text">Tableau de Bord</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🌙</span>
+                        <div class="feature-text">Mode Sombre/Clair</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📱</span>
+                        <div class="feature-text">Sync Multi-Appareils</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📈</span>
+                        <div class="feature-text">Statistiques</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ar" dir="rtl">
+                <div class="content-card">
+                    <div class="content-title">حول ScanPest AI</div>
+                    <p>ScanPest AI هو تطبيق ثوري يعتمد على الذكاء الاصطناعي يحول إدارة الآفات للمزارعين والبستانيين. باستخدام تقنية الرؤية الحاسوبية المتطورة، يحدد تطبيقنا الحشرات الضارة فوراً عبر كاميرا الهاتف الذكي ويقدم توصيات ذكية للمبيدات الحشرية.</p>
+                </div>
+                
+                <div class="content-card">
+                    <p>منصتنا الشاملة تتجاوز التحديد البسيط. احصل على اقتراحات علاج مخصصة، وزامن اكتشافاتك عبر جميع الأجهزة، وادخل إلى تحليلات قوية عبر لوحة التحكم الكاملة لتتبع نجاح إدارة الآفات عبر الزمن.</p>
+                </div>
+                
+                <div class="content-card">
+                    <p>مع المزامنة السحابية السلسة ودعم الوضع المظلم/الفاتح والإحصائيات المفصلة، يمكّنك ScanPest AI من اتخاذ قرارات مدروسة قائمة على البيانات لحماية مثلى للمحاصيل.</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon">🔍</span>
+                        <div class="feature-text">كشف بالذكاء الاصطناعي</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💊</span>
+                        <div class="feature-text">توصيات المبيدات</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">☁️</span>
+                        <div class="feature-text">مزامنة سحابية</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔐</span>
+                        <div class="feature-text">تسجيل دخول جوجل</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <div class="feature-text">لوحة تحكم تحليلية</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🌙</span>
+                        <div class="feature-text">وضع مظلم/فاتح</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📱</span>
+                        <div class="feature-text">مزامنة متعددة الأجهزة</div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📈</span>
+                        <div class="feature-text">إحصائيات الكشف</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            // Remove active class from all buttons and sections
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            
+            // Add active class to selected button and section
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+            
+            // Update page title
+            const titles = {
+                'en': 'ScanPest AI',
+                'fr': "ScanPest AI",
+                'ar': 'ScanPest AI'
+            };
+            document.getElementById('page-title').textContent = titles[lang];
+        }
+
+        // Auto-detect language on load
+        window.onload = () => {
+            const userLang = navigator.language || navigator.userLanguage;
+            let targetLang = 'en';
+            
+            if (userLang.startsWith('fr')) {
+                targetLang = 'fr';
+            } else if (userLang.startsWith('ar')) {
+                targetLang = 'ar';
+            }
+            
+            // Simulate click on the appropriate language button
+            const targetBtn = document.querySelector(`.lang-btn[onclick*="${targetLang}"]`);
+            if (targetBtn) {
+                targetBtn.click();
+            }
+        };
+
+        // Add smooth loading animation
+        setTimeout(() => {
+            document.querySelector('.container').classList.add('loading');
+        }, 100);
+    </script>
+</body>
+</html>

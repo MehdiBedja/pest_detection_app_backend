@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Terms of Use - ScanPest AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 5px; height: 5px; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { width: 4px; height: 4px; left: 85%; animation-delay: 0.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .logo-bg {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .effective-date {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .lang-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lang-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .lang-btn:hover::before {
+            left: 100%;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h2::before {
+            content: '📱';
+            font-size: 1.2rem;
+        }
+
+        h2:nth-of-type(2)::before { content: '👤'; }
+        h2:nth-of-type(3)::before { content: '⚖️'; }
+        h2:nth-of-type(4)::before { content: '⚠️'; }
+        h2:nth-of-type(5)::before { content: '🗑️'; }
+        h2:nth-of-type(6)::before { content: '📝'; }
+        h2:nth-of-type(7)::before { content: '📧'; }
+
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        a {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #00d4ff;
+            text-decoration: underline;
+        }
+
+        /* RTL support */
+        section[dir="rtl"] {
+            text-align: right;
+        }
+
+        section[dir="rtl"] ul {
+            margin-right: 1.5rem;
+            margin-left: 0;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .glass-card {
+                padding: 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .lang-switcher {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .lang-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0;
+            animation: loadIn 1s ease-out forwards;
+        }
+
+        @keyframes loadIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container loading">
+        <div class="glass-card">
+            <header>
+                <h1 id="page-title">Terms of Use</h1>
+                <p class="subtitle">Your Agreement with ScanPest AI</p>
+                <p class="effective-date" id="effective-date">Effective Date: June 26, 2025</p>
+            </header>
+
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="setLanguage('en')">🇺🇸 English</button>
+                <button class="lang-btn" onclick="setLanguage('fr')">🇫🇷 Français</button>
+                <button class="lang-btn" onclick="setLanguage('ar')">🇸🇦 العربية</button>
+            </div>
+
+            <section id="en" class="active">
+                <div class="content-card">
+                    <p>Welcome to <strong>ScanPest AI</strong>. By accessing or using our app, you agree to these Terms of Use. Please read them carefully.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Use of the App</h2>
+                    <p>ScanPest AI is intended to help users identify and keep track of insect pests. You may use the app only for personal, non-commercial purposes. You must not misuse the app or attempt to interfere with its operation.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>User Content</h2>
+                    <p>You are responsible for any images you upload or capture in the app. You confirm that you have the right to use these images. By using the app, you grant us permission to store and process these images solely for pest detection and history features.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Intellectual Property</h2>
+                    <p>All trademarks, logos, and content related to ScanPest AI are owned by us. You may not copy, distribute, or modify any part of the app without our written permission.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Limitation of Liability</h2>
+                    <p>We strive to keep the app accurate and available, but we make no guarantees regarding accuracy or availability. We are not liable for any damages resulting from your use or inability to use the app.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Account and Data Deletion</h2>
+                    <p>If you wish to delete your stored data, you can contact us at <a href="mailto:mahdibedja@gmail.com">mahdibedja@gmail.com</a> to request deletion of your images from our server.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Changes to Terms</h2>
+                    <p>We may update these Terms of Use from time to time. We will post the updated version on this page with a new effective date.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Contact Us</h2>
+                    <p>If you have questions about these Terms, please contact us at:</p>
+                    <p><a href="mailto:mahdibedja@gmail.com">mahdibedja@gmail.com</a></p>
+                </div>
+            </section>
+
+            <section id="fr">
+                <div class="content-card">
+                    <p>Bienvenue sur <strong>ScanPest AI</strong>. En accédant ou en utilisant notre application, vous acceptez ces Conditions d'Utilisation. Veuillez les lire attentivement.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Utilisation de l'Application</h2>
+                    <p>ScanPest AI est conçu pour aider les utilisateurs à identifier et suivre les insectes nuisibles. Vous ne pouvez utiliser l'application qu'à des fins personnelles et non commerciales. Vous ne devez pas abuser de l'application ou tenter d'interférer avec son fonctionnement.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Contenu Utilisateur</h2>
+                    <p>Vous êtes responsable de toutes les images que vous téléchargez ou capturez dans l'application. Vous confirmez que vous avez le droit d'utiliser ces images. En utilisant l'application, vous nous accordez la permission de stocker et traiter ces images uniquement pour les fonctionnalités de détection de nuisibles et d'historique.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Propriété Intellectuelle</h2>
+                    <p>Toutes les marques, logos et contenus liés à ScanPest AI nous appartiennent. Vous ne pouvez pas copier, distribuer ou modifier toute partie de l'application sans notre permission écrite.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Limitation de Responsabilité</h2>
+                    <p>Nous nous efforçons de maintenir l'application précise et disponible, mais nous ne donnons aucune garantie concernant la précision ou la disponibilité. Nous ne sommes pas responsables des dommages résultant de votre utilisation ou de votre incapacité à utiliser l'application.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Compte et Suppression de Données</h2>
+                    <p>Si vous souhaitez supprimer vos données stockées, vous pouvez nous contacter à <a href="mailto:mahdibedja@gmail.com">mahdibedja@gmail.com</a> pour demander la suppression de vos images de notre serveur.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Modifications des Conditions</h2>
+                    <p>Nous pouvons mettre à jour ces Conditions d'Utilisation de temps en temps. Nous publierons la version mise à jour sur cette page avec une nouvelle date d'entrée en vigueur.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>Nous Contacter</h2>
+                    <p>Si vous avez des questions sur ces Conditions, veuillez nous contacter à :</p>
+                    <p><a href="mailto:mahdibedja@gmail.com">mahdibedja@gmail.com</a></p>
+                </div>
+            </section>
+
+            <section id="ar" dir="rtl">
+                <div class="content-card">
+                    <p>مرحباً بك في <strong>ScanPest AI</strong>. من خلال الوصول إلى تطبيقنا أو استخدامه، فإنك توافق على شروط الاستخدام هذه. يرجى قراءتها بعناية.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>استخدام التطبيق</h2>
+                    <p>تم تصميم ScanPest AI لمساعدة المستخدمين في تحديد وتتبع الآفات الحشرية. يمكنك استخدام التطبيق فقط للأغراض الشخصية وغير التجارية. يجب ألا تسيء استخدام التطبيق أو تحاول التداخل مع تشغيله.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>محتوى المستخدم</h2>
+                    <p>أنت مسؤول عن أي صور تحملها أو تلتقطها في التطبيق. تؤكد أن لديك الحق في استخدام هذه الصور. باستخدام التطبيق، تمنحنا الإذن لتخزين ومعالجة هذه الصور فقط لميزات كشف الآفات والتاريخ.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>الملكية الفكرية</h2>
+                    <p>جميع العلامات التجارية والشعارات والمحتوى المتعلق بـ ScanPest AI مملوك لنا. لا يجوز لك نسخ أو توزيع أو تعديل أي جزء من التطبيق دون إذننا الخطي.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>تحديد المسؤولية</h2>
+                    <p>نسعى للحفاظ على دقة التطبيق وإتاحته، لكننا لا نقدم أي ضمانات بشأن الدقة أو التوفر. نحن غير مسؤولين عن أي أضرار ناتجة عن استخدامك أو عدم قدرتك على استخدام التطبيق.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>الحساب وحذف البيانات</h2>
+                    <p>إذا كنت ترغب في حذف بياناتك المخزنة، يمكنك الاتصال بنا على <a href="mailto:mahdibedja@gmail.com">mahdibedja@gmail.com</a> لطلب حذف صورك من خادمنا.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>تغييرات الشروط</h2>
+                    <p>قد نحدث شروط الاستخدام هذه من حين لآخر. سننشر النسخة المحدثة على هذه الصفحة مع تاريخ سريان جديد.</p>
+                </div>
+
+                <div class="content-card">
+                    <h2>اتصل بنا</h2>
+                    <p>إذا كان لديك أسئلة حول هذه الشروط، يرجى الاتصال بنا على:</p>
+                    <p><a href="mailto:mahdibedja@gmail.com">mahdibedja@gmail.com</a></p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            // Remove active class from all buttons and sections
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            
+            // Add active class to selected button and section
+            event.target.classList.add('active');
+            document.getElementById(lang).classList.add('active');
+            
+            // Update page title and effective date
+            const titles = {
+                'en': 'Terms of Use',
+                'fr': 'Conditions d\'Utilisation',
+                'ar': 'شروط الاستخدام'
+            };
+            
+            const subtitles = {
+                'en': 'Your Agreement with ScanPest AI',
+                'fr': 'Votre Accord avec ScanPest AI',
+                'ar': 'اتفاقيتك مع ScanPest AI'
+            };
+            
+            const dates = {
+                'en': 'Effective Date: June 26, 2025',
+                'fr': 'Date d\'entrée en vigueur : 26 juin 2025',
+                'ar': 'تاريخ السريان: 26 يونيو 2025'
+            };
+            
+            document.getElementById('page-title').textContent = titles[lang];
+            document.querySelector('.subtitle').textContent = subtitles[lang];
+            document.getElementById('effective-date').textContent = dates[lang];
+        }
+
+        // Auto-detect language on load
+        window.onload = () => {
+            const userLang = navigator.language || navigator.userLanguage;
+            let targetLang = 'en';
+            
+            if (userLang.startsWith('fr')) {
+                targetLang = 'fr';
+            } else if (userLang.startsWith('ar')) {
+                targetLang = 'ar';
+            }
+            
+            // Simulate click on the appropriate language button
+            const targetBtn = document.querySelector(`.lang-btn[onclick*="${targetLang}"]`);
+            if (targetBtn) {
+                targetBtn.click();
+            }
+        };
+
+        // Add smooth loading animation
+        setTimeout(() => {
+            document.querySelector('.container').classList.add('loading');
+        }, 100);
+    </script>
+</body>
+</html>

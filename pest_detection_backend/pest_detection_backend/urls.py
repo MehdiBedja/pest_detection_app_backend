@@ -9,7 +9,12 @@ urlpatterns = [
     path("admin/", admin.site.urls),
    #path('image_management/', include('image_management.urls')),  # Include app-specific URLs
     path('user_management/', include('user_management.urls')) , # Include your app's URL configuration
-    path('detection/' , include('detection.urls'))
+    path('detection/' , include('detection.urls')),
+
+
+
+    path('', include('legal.urls')),  # This makes /app-info/, /privacy-policy/, /terms/ available.
+
 
 ]
 

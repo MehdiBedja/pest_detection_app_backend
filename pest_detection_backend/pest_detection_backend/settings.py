@@ -121,6 +121,7 @@ INSTALLED_APPS = [
     'user_management',
     'image_management',
     'detection',
+    'legal',
 
     # Third-party apps
     'allauth.socialaccount.providers.google',
