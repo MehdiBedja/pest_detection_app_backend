@@ -65,6 +65,7 @@
             padding: 3rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             animation: slideUp 0.8s ease-out;
+            margin-bottom: 2rem;
         }
 
         @keyframes slideUp {
@@ -129,6 +130,31 @@
             color: rgba(255, 255, 255, 0.8);
             font-size: 1.2rem;
             font-weight: 300;
+        }
+
+        .privacy-link-top {
+            margin-top: 1.5rem;
+        }
+
+        .privacy-link-top a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .privacy-link-top a:hover {
+            color: #00ff88;
+            border-color: rgba(0, 255, 136, 0.5);
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.2);
         }
 
         .lang-switcher {
@@ -261,6 +287,134 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
+        /* Footer Styles */
+        .footer {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer-brand {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .footer-link:hover::before {
+            left: 100%;
+        }
+
+        .footer-link:hover {
+            color: #00ff88;
+            border-color: rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            margin: 2rem 0;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icon:hover {
+            background: linear-gradient(45deg, #00d4ff, #00ff88);
+            color: white;
+            transform: translateY(-3px) rotate(10deg);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+
         /* RTL support */
         section[dir="rtl"] {
             text-align: right;
@@ -293,6 +447,24 @@
             .features-grid {
                 grid-template-columns: 1fr;
             }
+
+            .footer-content {
+                padding: 0 1rem;
+            }
+
+            .footer-links {
+                gap: 1rem;
+            }
+
+            .footer-link {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
         /* Smooth scroll behavior */
@@ -323,9 +495,11 @@
     <div class="container loading">
         <div class="glass-card">
             <header>
-
                 <h1 id="page-title">ScanPest AI</h1>
                 <p class="subtitle">AI-Powered Pest Detection Technology</p>
+                <div class="privacy-link-top">
+                    <a href="https://pest-detection-app-backend.onrender.com/privacy-policy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                </div>
             </header>
 
             <div class="lang-switcher">
@@ -377,7 +551,6 @@
                         <span class="feature-icon">📱</span>
                         <div class="feature-text">Multi-Device Sync</div>
                     </div>
-
                 </div>
             </section>
 
@@ -424,7 +597,6 @@
                         <span class="feature-icon">📱</span>
                         <div class="feature-text">Sync Multi-Appareils</div>
                     </div>
-
                 </div>
             </section>
 
@@ -471,11 +643,31 @@
                         <span class="feature-icon">📱</span>
                         <div class="feature-text">مزامنة متعددة الأجهزة</div>
                     </div>
-
                 </div>
             </section>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">ScanPest AI</div>
+                <div class="footer-tagline">Revolutionizing pest management with AI technology</div>
+            </div>
+
+            <div class="footer-links">
+                <a href="https://pest-detection-app-backend.onrender.com/privacy-policy/" class="footer-link" target="_blank" rel="noopener noreferrer">
+                    Privacy Policy
+                </a>
+                <a href="https://pest-detection-app-backend.onrender.com/terms/" class="footer-link" target="_blank" rel="noopener noreferrer">
+                    Terms of Use 
+            </div>
+
+            <div class="footer-divider"></div>
+
+        </div>
+    </footer>
 
     <script>
         function setLanguage(lang) {
