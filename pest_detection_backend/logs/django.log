@@ -771,3 +771,4 @@ INFO 2025-06-28 00:04:19,959 basehttp 8852 12736 "GET /app-info HTTP/1.1" 301 0
 INFO 2025-06-28 00:04:20,069 basehttp 8852 20484 "GET /app-info/ HTTP/1.1" 200 23270
 INFO 2025-06-28 00:06:06,497 basehttp 8852 20484 "GET /app-info/ HTTP/1.1" 200 26367
 INFO 2025-06-28 00:08:10,593 basehttp 8852 20484 "GET /app-info/ HTTP/1.1" 200 25423
+INFO 2025-07-01 17:51:15,765 autoreload 18156 23704 Watching for file changes with StatReloader

@@ -8,3 +8,6 @@ def privacy_policy(request):
 
 def terms(request):
     return render(request, 'legal/terms.html')
+
+def accountdel(request):
+    return render(request , 'legal/account_deletion.html')
